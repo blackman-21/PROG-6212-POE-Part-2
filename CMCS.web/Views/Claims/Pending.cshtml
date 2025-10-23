@@ -1,0 +1,68 @@
+﻿@model IEnumerable<CMCS.Web.Models.Claim>
+
+@{
+    Layout = "_Layout";
+}
+
+
+@{
+    ViewData["Title"] = "Pending Claims";
+}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+<div class="container py-4">
+    <h2>Pending Claims (Coordinator View)</h2>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">@TempData["Success"]</div>
+    }
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Lecturer</th>
+                <th>Month</th>
+                <th>Amount (R)</th>
+                <th>Notes</th>
+                <th>Files</th>
+                <th>Submitted</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var c in Model)
+            {
+                <tr>
+                    <td>@c.Id</td>
+                    <td>@c.LecturerName</td>
+                    <td>@c.Month</td>
+                    <td>@String.Format("{0:N2}", c.TotalAmount)</td>
+                    <td style="max-width:220px; overflow:auto;">@c.Notes</td>
+                    <td>
+                        @foreach (var f in c.Uploads)
+                        {
+                            <div><a asp-action="Download" asp-route-id="@f.Id">@f.OriginalFileName</a></div>
+                        }
+                    </td>
+                    <td>@c.SubmittedAt.ToLocalTime().ToString("g")</td>
+                    <td>
+                        <form asp-action="Approve" method="post" class="d-inline">
+                            <input type="hidden" name="id" value="@c.Id" />
+                            <button type="submit" class="btn btn-sm btn-success">Approve</button>
+                        </form>
+
+                        <form asp-action="Reject" method="post" class="d-inline ms-1">
+                            <input type="hidden" name="id" value="@c.Id" />
+                            <input type="text" name="reason" placeholder="reason (optional)" class="form-control form-control-sm d-inline-block" style="width:160px" />
+                            <button type="submit" class="btn btn-sm btn-danger ms-1">Reject</button>
+                        </form>
+
+                        <a asp-action="Details" asp-route-id="@c.Id" class="btn btn-sm btn-outline-primary ms-1">Details</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
