@@ -1,0 +1,66 @@
+﻿@model IEnumerable<CMCS.Web.Models.Claim>
+
+@{
+    Layout = "_Layout";
+}
+
+
+@{
+    ViewData["Title"] = "Claims";
+}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>My Claims</h2>
+        <a asp-action="Create" class="btn btn-primary">Submit New Claim</a>
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">@TempData["Success"]</div>
+    }
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Lecturer</th>
+                <th>Month</th>
+                <th>Hours</th>
+                <th>Amount (R)</th>
+                <th>Status</th>
+                <th>Submitted</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var c in Model)
+            {
+                <tr>
+                    <td>@c.LecturerName</td>
+                    <td>@c.Month</td>
+                    <td>@c.TotalHours</td>
+                    <td>@String.Format("{0:N2}", c.TotalAmount)</td>
+                    <td>
+                        @if (c.Status == CMCS.Web.Models.ClaimStatus.Pending)
+                        {
+                            <span class="badge bg-warning text-dark">Pending</span>
+                        }
+                        else if (c.Status == CMCS.Web.Models.ClaimStatus.Approved)
+                        {
+                            <span class="badge bg-success">Approved</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-danger">Rejected</span>
+                        }
+                    </td>
+                    <td>@c.SubmittedAt.ToLocalTime().ToString("g")</td>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@c.Id" class="btn btn-sm btn-outline-primary">Details</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
