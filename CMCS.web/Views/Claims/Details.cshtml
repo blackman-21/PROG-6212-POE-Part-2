@@ -10,18 +10,27 @@
     <dl class="row">
         <dt class="col-sm-3">Lecturer</dt>
         <dd class="col-sm-9">@Model.LecturerName</dd>
+
         <dt class="col-sm-3">Month</dt>
         <dd class="col-sm-9">@Model.Month</dd>
+
         <dt class="col-sm-3">Hours</dt>
         <dd class="col-sm-9">@Model.TotalHours</dd>
+
         <dt class="col-sm-3">Hourly Rate</dt>
-        <dd class="col-sm-9">R@Model.HourlyRate</dd>
+        
+        <dd class="col-sm-9">R @Model.HourlyRate.ToString("N2")</dd>
+
         <dt class="col-sm-3">Total Amount</dt>
-        <dd class="col-sm-9">R@String.Format("{0:N2}", Model.TotalAmount)</dd>
+        
+        <dd class="col-sm-9">@String.Format("R {0:N2}", Model.TotalAmount)</dd>
+
         <dt class="col-sm-3">Status</dt>
         <dd class="col-sm-9">@Model.Status</dd>
+
         <dt class="col-sm-3">Submitted</dt>
         <dd class="col-sm-9">@Model.SubmittedAt.ToLocalTime()</dd>
+
         <dt class="col-sm-3">Files</dt>
         <dd class="col-sm-9">
             @foreach (var f in Model.Uploads)
@@ -29,6 +38,7 @@
                 <div><a asp-action="Download" asp-route-id="@f.Id">@f.OriginalFileName</a></div>
             }
         </dd>
+
         <dt class="col-sm-3">Notes</dt>
         <dd class="col-sm-9">@Model.Notes</dd>
     </dl>
