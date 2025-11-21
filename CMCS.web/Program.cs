@@ -35,3 +35,4 @@ app.MapControllerRoute(
     pattern: "{controller=Claims}/{action=Index}/{id?}");
 
 app.Run();
+ 
