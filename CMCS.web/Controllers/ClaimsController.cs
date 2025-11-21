@@ -50,7 +50,7 @@ namespace CMCS.Web.Controllers
             [Bind("LecturerName,Month,TotalHours,HourlyRate,Notes")] Claim claim,
             List<IFormFile> files)
         {
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid) 
             {
                 return View(claim);
             }
